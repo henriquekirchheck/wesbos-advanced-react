@@ -35,6 +35,7 @@
     ]
   },
   "dependencies": {
+    "@keystone-6/auth": "^2.0.0",
     "@keystone-6/core": "",
     "@types/nodemailer": "",
     "dotenv": "",
@@ -42,9 +43,9 @@
     "stripe": ""
   },
   "devDependencies": {
+    "@babel/eslint-parser": "",
     "@typescript-eslint/eslint-plugin": "",
     "@typescript-eslint/parser": "",
-    "@babel/eslint-parser": "",
     "eslint": "",
     "eslint-config-airbnb": "",
     "eslint-config-airbnb-typescript": "",
