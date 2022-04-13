@@ -55,10 +55,10 @@ const InnerStyles = styled.div`
 
 export function Page({ children }) {
   return (
-    <div>
+    <InnerStyles>
       <GlobalStyles />
       <Header />
       {children}
-    </div>
+    </InnerStyles>
   )
 }
