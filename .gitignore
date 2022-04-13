@@ -3,4 +3,4 @@ node_modules/
 .keystone/
 
 .env*
-.keystone.db
+keystone.db

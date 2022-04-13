@@ -1,5 +1,5 @@
 import { list } from '@keystone-6/core'
-import { select, text, integer } from '@keystone-6/core/fields'
+import { select, text, integer, relationship } from '@keystone-6/core/fields'
 
 export const Product = list({
   // TODO: Access
@@ -8,6 +8,15 @@ export const Product = list({
     description: text({
       ui: {
         displayMode: 'textarea',
+      },
+    }),
+    photo: relationship({
+      ref: 'ProductImage.product',
+      ui: {
+        displayMode: 'cards',
+        cardFields: ['image', 'altText'],
+        inlineCreate: { fields: ['image', 'altText'] },
+        inlineEdit: { fields: ['image', 'altText'] },
       },
     }),
     status: select({

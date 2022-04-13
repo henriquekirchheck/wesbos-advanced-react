@@ -1,5 +1,5 @@
 import { list } from '@keystone-6/core'
-import { text } from '@keystone-6/core/fields'
+import { text, relationship } from '@keystone-6/core/fields'
 import { cloudinaryImage } from '@keystone-6/cloudinary'
 import 'dotenv/config'
 
@@ -16,6 +16,12 @@ export const ProductImage = list({
       cloudinary,
       label: 'Source'
     }),
-    altText: text()
+    altText: text(),
+    product: relationship({ ref: 'Product.photo' })
+  },
+  ui: {
+    listView: {
+      initialColumns: ['image', 'altText', 'product', 'id']
+    }
   }
 })
