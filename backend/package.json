@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "@keystone-6/auth": "^2.0.0",
+    "@keystone-6/cloudinary": "^2.0.0",
     "@keystone-6/core": "",
     "@types/nodemailer": "",
     "dotenv": "",

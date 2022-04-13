@@ -187,6 +187,98 @@ input ProductCreateInput {
   price: Int
 }
 
+type ProductImage {
+  id: ID!
+  image: CloudinaryImage_File
+  altText: String
+}
+
+type CloudinaryImage_File {
+  id: ID
+  filename: String
+  originalFilename: String
+  mimetype: String
+  encoding: String
+  publicUrl: String
+  publicUrlTransformed(transformation: CloudinaryImageFormat): String
+}
+
+"""
+Mirrors the formatting options [Cloudinary provides](https://cloudinary.com/documentation/image_transformation_reference).
+All options are strings as they ultimately end up in a URL.
+"""
+input CloudinaryImageFormat {
+  """
+   Rewrites the filename to be this pretty string. Do not include `/` or `.`
+  """
+  prettyName: String
+  width: String
+  height: String
+  crop: String
+  aspect_ratio: String
+  gravity: String
+  zoom: String
+  x: String
+  y: String
+  format: String
+  fetch_format: String
+  quality: String
+  radius: String
+  angle: String
+  effect: String
+  opacity: String
+  border: String
+  background: String
+  overlay: String
+  underlay: String
+  default_image: String
+  delay: String
+  color: String
+  color_space: String
+  dpr: String
+  page: String
+  density: String
+  flags: String
+  transformation: String
+}
+
+input ProductImageWhereUniqueInput {
+  id: ID
+}
+
+input ProductImageWhereInput {
+  AND: [ProductImageWhereInput!]
+  OR: [ProductImageWhereInput!]
+  NOT: [ProductImageWhereInput!]
+  id: IDFilter
+  altText: StringFilter
+}
+
+input ProductImageOrderByInput {
+  id: OrderDirection
+  altText: OrderDirection
+}
+
+input ProductImageUpdateInput {
+  image: Upload
+  altText: String
+}
+
+"""
+The `Upload` scalar type represents a file upload.
+"""
+scalar Upload
+
+input ProductImageUpdateArgs {
+  where: ProductImageWhereUniqueInput!
+  data: ProductImageUpdateInput!
+}
+
+input ProductImageCreateInput {
+  image: Upload
+  altText: String
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -211,6 +303,15 @@ type Mutation {
   updateProducts(data: [ProductUpdateArgs!]!): [Product]
   deleteProduct(where: ProductWhereUniqueInput!): Product
   deleteProducts(where: [ProductWhereUniqueInput!]!): [Product]
+  createProductImage(data: ProductImageCreateInput!): ProductImage
+  createProductImages(data: [ProductImageCreateInput!]!): [ProductImage]
+  updateProductImage(
+    where: ProductImageWhereUniqueInput!
+    data: ProductImageUpdateInput!
+  ): ProductImage
+  updateProductImages(data: [ProductImageUpdateArgs!]!): [ProductImage]
+  deleteProductImage(where: ProductImageWhereUniqueInput!): ProductImage
+  deleteProductImages(where: [ProductImageWhereUniqueInput!]!): [ProductImage]
   endSession: Boolean!
   authenticateUserWithPassword(
     email: String!
@@ -257,6 +358,14 @@ type Query {
   ): [Product!]
   product(where: ProductWhereUniqueInput!): Product
   productsCount(where: ProductWhereInput! = {}): Int
+  productImages(
+    where: ProductImageWhereInput! = {}
+    orderBy: [ProductImageOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [ProductImage!]
+  productImage(where: ProductImageWhereUniqueInput!): ProductImage
+  productImagesCount(where: ProductImageWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }

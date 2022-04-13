@@ -1,7 +1,7 @@
 import { config } from '@keystone-6/core'
 import { statelessSessions } from '@keystone-6/core/session'
 import { createAuth } from '@keystone-6/auth'
-import { Product, User } from './schemas'
+import { Product, ProductImage, User } from './schemas'
 import 'dotenv/config'
 
 const databaseUrl = `${process.env.DATABASE_URL}` || 'file:./db/keystone.db'
@@ -39,6 +39,7 @@ export default withAuth(
     lists: {
       User,
       Product,
+      ProductImage,
     },
     ui: {
       isAccessAllowed: ({ session }) => {
