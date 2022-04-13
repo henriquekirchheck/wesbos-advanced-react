@@ -3,6 +3,7 @@ import { statelessSessions } from '@keystone-6/core/session'
 import { createAuth } from '@keystone-6/auth'
 import { Product, ProductImage, User } from './schemas'
 import 'dotenv/config'
+import { insertSeedData } from './seed-data'
 
 const databaseUrl = `${process.env.DATABASE_URL}` || 'file:./db/keystone.db'
 
@@ -34,7 +35,11 @@ export default withAuth(
     db: {
       provider: 'sqlite',
       url: databaseUrl,
-      // TODO: add data seeding
+      async onConnect(keystone) {
+        console.log('Connected to the database')
+        if (process.argv.includes('--seed-data')) 
+          await insertSeedData(keystone)
+      },
     },
     lists: {
       User,
