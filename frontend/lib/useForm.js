@@ -5,8 +5,8 @@ export function useForm(initial = {}) {
 
   function handleChange(event) {
     let { value, name, type } = event.target
-    if (type === 'number') value = parseInt(value)
-    if (type === 'file') value[0] = event.target.files
+    if (type === 'number' && !isNaN(parseInt(value))) value = parseInt(value)
+    if (type === 'file') [value] = event.target.files
 
     setFormInputs({
       ...formInputs,
@@ -20,7 +20,7 @@ export function useForm(initial = {}) {
 
   function clearForm() {
     const blankState = Object.fromEntries(
-      Object.entries(formInputs).map(([key, value]) => [key, ''])
+      Object.entries(formInputs).map(([key]) => [key, ''])
     )
 
     setFormInputs(blankState)
