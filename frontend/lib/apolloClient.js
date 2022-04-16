@@ -1,5 +1,5 @@
 import { ApolloClient, ApolloLink, InMemoryCache } from '@apollo/client'
-import { onError } from '@apollo/link-error'
+import { onError } from '@apollo/client/link/error'
 import { getDataFromTree } from '@apollo/client/react/ssr'
 import { createUploadLink } from 'apollo-upload-client'
 import withApollo from 'next-with-apollo'
@@ -43,4 +43,4 @@ function createClient({ headers, initialState }) {
   })
 }
 
-export default withApollo(createClient, { getDataFromTree })
+export const useApollo = withApollo(createClient, getDataFromTree)

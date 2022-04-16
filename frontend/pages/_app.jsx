@@ -1,11 +1,11 @@
-import { Page } from '../components/Page'
-import NProgress from 'nprogress'
-import Router from 'next/router'
 import { ApolloProvider } from '@apollo/client'
+import Router from 'next/router'
+import NProgress from 'nprogress'
+import { StrictMode } from 'react'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
-
+import { Page } from '../components/Page'
 import '../components/styles/nprogress.css'
-import withData from '../lib/withData'
+import { useApollo } from '../lib/apolloClient'
 
 Router.events.on('routeChangeStart', () => NProgress.start())
 Router.events.on('routeChangeComplete', () => NProgress.done())
@@ -26,11 +26,12 @@ const GlobalStyle = createGlobalStyle`
     --light-gray: #e1e1e1;
     --off-white: #ededed;
     --max-width: 1000px;
-    --box-shadow: 0 12px 24px 0 rgba(0, 0, 0, 0.9);
+    --box-shadow: 0 12px 24px 0 rgba(0, 0, 0, 0.25);
   }
 
   html {
     box-sizing: border-box;
+    font-size: 10px;
   }
 
   *, *:before, *:after {
@@ -63,20 +64,22 @@ const theme = {}
 
 function App({ Component, pageProps, apollo }) {
   return (
-    <ApolloProvider client={apollo}>
-      <GlobalStyle />
-      <ThemeProvider theme={theme}>
-        <Page>
-          <Component {...pageProps} />
-        </Page>
-      </ThemeProvider>
-    </ApolloProvider>
+    <StrictMode>
+      <ApolloProvider client={apollo}>
+        <GlobalStyle />
+        <ThemeProvider theme={theme}>
+          <Page>
+            <Component {...pageProps} />
+          </Page>
+        </ThemeProvider>
+      </ApolloProvider>
+    </StrictMode>
   )
 }
 
 App.getInitialProps = async function ({ Component, ctx }) {
   let pageProps = {}
-  if(Component.getInitialProps) {
+  if (Component.getInitialProps) {
     pageProps = await Component.getInitialProps(ctx)
   }
 
@@ -84,4 +87,4 @@ App.getInitialProps = async function ({ Component, ctx }) {
   return pageProps
 }
 
-export default withData(App)
+export default useApollo(App)
