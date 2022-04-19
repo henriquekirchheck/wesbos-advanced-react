@@ -21,7 +21,7 @@ function createClient({ headers, initialState }) {
           )
       }),
       // this uses apollo-link-http under the hood, so all the options here come from that package
-      createUploadLink({
+      new createUploadLink({
         uri: process.env.NODE_ENV === 'development' ? endpoint : prodEndpoint,
         fetchOptions: {
           credentials: 'include',
@@ -43,4 +43,4 @@ function createClient({ headers, initialState }) {
   })
 }
 
-export const useApollo = withApollo(createClient, getDataFromTree)
+export const useApollo = withApollo(createClient, { getDataFromTree })

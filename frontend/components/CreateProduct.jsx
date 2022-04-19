@@ -1,5 +1,6 @@
 import { useMutation } from '@apollo/client'
 import gql from 'graphql-tag'
+import { useState } from 'react'
 import { useForm } from '../lib/useForm'
 import DisplayError from './ErrorMessage'
 import Form from './styles/Form'
@@ -30,18 +31,27 @@ export function CreateProduct() {
     name: 'Shoes',
     price: 3200,
     description: 'Cool Shoes',
-    image: '',
+    image: null,
   })
 
-  const [createProduct, { data, loading, error }] = useMutation(
+  const [error, setError] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [data, setData] = useState(null)
+  const [createProduct] = useMutation(
     CREATE_PRODUCT_MUTATION,
     {
       variables: formInputs,
+      onError: (error) => {setError(error)},
+      onCompleted: (data) => {
+        setData(data)
+        setLoading(false)
+      }
     }
   )
 
   async function handleSubmit(event) {
     event.preventDefault()
+    setLoading(true)
     await createProduct()
     clearForm()
   }
@@ -52,13 +62,7 @@ export function CreateProduct() {
       <fieldset aria-busy={loading} disabled={loading}>
         <label htmlFor="image">
           Image
-          <input
-            required
-            type="file"
-            id="image"
-            name="image"
-            onChange={handleChange}
-          />
+          <input type="file" id="image" name="image" onChange={handleChange} />
         </label>
         <label htmlFor="name">
           Name
@@ -97,6 +101,7 @@ export function CreateProduct() {
         </label>
 
         <button type="submit">+ Add Product</button>
+        {/* <button type="button" onClick={clearForm}>- Reset</button> */}
       </fieldset>
     </Form>
   )
