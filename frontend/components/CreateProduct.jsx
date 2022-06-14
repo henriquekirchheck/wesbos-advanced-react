@@ -3,7 +3,9 @@ import gql from 'graphql-tag'
 import { useState } from 'react'
 import { useForm } from '../lib/useForm'
 import DisplayError from './ErrorMessage'
+import { ALL_PRODUCTS_QUERY } from './Products'
 import Form from './styles/Form'
+import Router from 'next/router'
 
 const CREATE_PRODUCT_MUTATION = gql`
   mutation CREATE_PRODUCT_MUTATION(
@@ -37,23 +39,30 @@ export function CreateProduct() {
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState(null)
-  const [createProduct] = useMutation(
-    CREATE_PRODUCT_MUTATION,
-    {
-      variables: formInputs,
-      onError: (error) => {setError(error)},
-      onCompleted: (data) => {
-        setData(data)
-        setLoading(false)
-      }
-    }
-  )
+  const [createProduct] = useMutation(CREATE_PRODUCT_MUTATION, {
+    variables: formInputs,
+    onError: (error) => {
+      setError(error)
+    },
+    onCompleted: (data) => {
+      setData(data)
+      setLoading(false)
+    },
+    refetchQueries: [
+      {
+        query: ALL_PRODUCTS_QUERY,
+      },
+    ],
+  })
 
   async function handleSubmit(event) {
     event.preventDefault()
     setLoading(true)
-    await createProduct()
+    const response = await createProduct()
     clearForm()
+    Router.push({
+      pathname: `/product/${response.data.createProduct.id}`
+    })
   }
 
   return (
