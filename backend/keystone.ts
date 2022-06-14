@@ -28,7 +28,7 @@ export default withAuth(
   config({
     server: {
       cors: {
-        origin: [process.env.FRONTEND_URL || 'http://localhost:3000'],
+        origin: [process.env.FRONTEND_URL || 'http://localhost:7777'],
         credentials: true,
       },
     },
@@ -37,7 +37,7 @@ export default withAuth(
       url: databaseUrl,
       async onConnect(keystone) {
         console.log('Connected to the database')
-        if (process.argv.includes('--seed-data')) 
+        if (process.argv.includes('--seed-data'))
           await insertSeedData(keystone)
       },
     },
