@@ -1,11 +1,10 @@
 import { useMutation } from '@apollo/client'
 import gql from 'graphql-tag'
-import { useState } from 'react'
+import Router from 'next/router'
 import { useForm } from '../lib/useForm'
-import DisplayError from './ErrorMessage'
+import { DisplayError } from './ErrorMessage'
 import { ALL_PRODUCTS_QUERY } from './Products'
 import Form from './styles/Form'
-import Router from 'next/router'
 
 const CREATE_PRODUCT_MUTATION = gql`
   mutation CREATE_PRODUCT_MUTATION(
@@ -36,32 +35,24 @@ export function CreateProduct() {
     image: null,
   })
 
-  const [error, setError] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const [data, setData] = useState(null)
-  const [createProduct] = useMutation(CREATE_PRODUCT_MUTATION, {
-    variables: formInputs,
-    onError: (error) => {
-      setError(error)
-    },
-    onCompleted: (data) => {
-      setData(data)
-      setLoading(false)
-    },
-    refetchQueries: [
-      {
-        query: ALL_PRODUCTS_QUERY,
-      },
-    ],
-  })
+  const [createProduct, { error, loading }] = useMutation(
+    CREATE_PRODUCT_MUTATION,
+    {
+      variables: formInputs,
+      refetchQueries: [
+        {
+          query: ALL_PRODUCTS_QUERY,
+        },
+      ],
+    }
+  )
 
   async function handleSubmit(event) {
     event.preventDefault()
-    setLoading(true)
     const response = await createProduct()
     clearForm()
     Router.push({
-      pathname: `/product/${response.data.createProduct.id}`
+      pathname: `/product/${response.data.createProduct.id}`,
     })
   }
 
@@ -110,7 +101,6 @@ export function CreateProduct() {
         </label>
 
         <button type="submit">+ Add Product</button>
-        {/* <button type="button" onClick={clearForm}>- Reset</button> */}
       </fieldset>
     </Form>
   )
