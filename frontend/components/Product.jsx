@@ -1,8 +1,8 @@
 import Link from 'next/link'
-import ItemStyles from './styles/ItemStyles'
-import Title from './styles/Title.js'
-import PriceTag from './styles/PriceTag.js'
 import { formatMoney } from '../lib/formatMoney'
+import ItemStyles from './styles/ItemStyles'
+import PriceTag from './styles/PriceTag.js'
+import Title from './styles/Title.js'
 
 export function Product({ product }) {
   return (
@@ -16,7 +16,18 @@ export function Product({ product }) {
       </Title>
       <PriceTag>{formatMoney(product.price)}</PriceTag>
       <p>{product.description}</p>
-      {/* TODO: Add delete and modify buttons */}
+      <div className="button-list">
+        <Link
+          href={{
+            pathname: 'update',
+            query: {
+              id: product.id,
+            },
+          }}
+        >
+          EDIT ^
+        </Link>
+      </div>
     </ItemStyles>
   )
 }
